@@ -3,6 +3,8 @@ from datetime import datetime
 import file_creator
 import mesh_export
 import os
+from tkinter import filedialog
+from tkinter import *
 clear = lambda: os.system('cls')
 def linear_interpolator(input_value, array_compare, array_result):
     position = 0
@@ -217,16 +219,27 @@ def print_function():
         print ("Isobaric specific heat [kJ/(kg.K)]: ", '{:.3f}'.format (global_variables.isobaric_specific_heat))
 
 def write_function():
+    # tkinter opens a dialog box to save the file
+    try:
+        root = Tk()
+        root.update()
+        root.withdraw()
+        root.filename =  filedialog.asksaveasfile(initialdir = global_variables.current_directory,title = "Save as",filetypes = (("txt files","*.txt"),("all files","*.*")))
+        root.destroy()
+        print("File Saved successfully")
+    except:
+        print("There was a problem while saving the file")
     # Get the date and time
     now = datetime.now ()
     today = now.strftime ("%d/%m/%Y %H:%M:%S")
 
-    write_file_name = input ("Enter the file name: ")
-    write_file_name = write_file_name + ".txt"
+    # write_file_name = input ("Enter the file name: ")
+    write_file_name = str(root.filename) + ".txt"
+    print(write_file_name)
     # Create a file and overwrite if there is already an existing one
-    f = open (write_file_name, "w")
+    f = open (write_file_name, "w", encoding="utf8")
     # Append to the created file above
-    a = open (write_file_name, "a")
+    a = open (write_file_name, "a", encoding="utf8")
 
     f.write ("Inputs:\n"
              "Velocity = " + str (global_variables.velocity) + " [m/s]\n"
@@ -296,6 +309,9 @@ def write_function():
                  "Resistance coefficient: " + str ('{:.3f}'.format (global_variables.permeability_resistance))
                  + " [1/m]\n")
     a.write("\nDate and Time: " + str(today))
+    f.close()
+    a.close()
+
 
 def wall_space_calculator():
     print ("\t\tWall Space Calculation\n")

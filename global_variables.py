@@ -1,5 +1,6 @@
 # This file is for all the global variables
 # All Tuple properties are for dry air
+import os
 
 Altitude = (0, 200, 400, 600, 800, 1000, 1200, 1400, 1600, 1800,
             2000, 2200, 2400, 2600, 2800, 3000, 3200, 3400, 3600,
@@ -51,6 +52,8 @@ Cmu = 0.09
 # Basic input control value
 error = False
 
+#
+current_directory = os.getcwd ()
 # Initial values
 velocity_component_x = 0
 velocity_component_y = 0

@@ -8,12 +8,12 @@ import global_variables
 # assign the mesh input as a global variable to be able to use in another function
 
 def select_mesh():
-	# read the boundary conditions from the .msh file 
+	# read the boundary conditions from the .msh file
 	# tkinter opens a dialog box to select the .msh file
 	root = Tk()
 	root.update()
 	root.withdraw()
-	root.filename =  filedialog.askopenfilename(initialdir = "/",title = "Select file",filetypes = (("msh files","*.msh"),("all files","*.*")))
+	root.filename =  filedialog.askopenfilename(initialdir = "/",title = "Select the mesh file",filetypes = (("msh files","*.msh"),("all files","*.*")))
 	root.destroy()
 	print("Importing Mesh variables...")
 	try:
@@ -31,8 +31,8 @@ def bc_reader(parser_name_bc, output_boundaries = list()):
 	all_variables = list()
 	parser_name = "(45"
 	input_boundaries = list()
-	
-	
+
+
 	for i in range(len(global_variables.contents)):
 		cd = global_variables.contents[i].rfind(parser_name)
 		if cd != -1:
@@ -45,7 +45,7 @@ def bc_reader(parser_name_bc, output_boundaries = list()):
 
 	for i in range(len(input_boundaries)):
 		input_boundaries[i] = input_boundaries[i].split(" ")
-	try:	
+	try:
 		arr = np.array(input_boundaries)
 		array_size = arr.shape
 		arr_row = array_size[0]
@@ -60,7 +60,7 @@ def bc_reader(parser_name_bc, output_boundaries = list()):
 			if control != -1:
 				output_boundaries.append(input_boundaries[i][j+1])
 				break
-				
+
 	for i in range(len(output_boundaries)):
 		output_boundaries[i] = output_boundaries[i].rstrip("\n()")
 	print("Exported " + parser_name_bc + " successfully")
