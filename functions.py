@@ -237,100 +237,107 @@ def print_function():
         print ("Isobaric specific heat [kJ/(kg.K)]: ", '{:.3f}'.format (global_variables.isobaric_specific_heat))
 
 def write_function():
-    # tkinter opens a dialog box to save the file
-    try:
-        root = Tk()
-        root.update()
-        root.withdraw()
-        root.filename =  filedialog.asksaveasfilename(initialdir = global_variables.current_directory,title = "Save as",filetypes = (("txt files","*.txt"),("all files","*.*")))
-        root.destroy()
-        print("File Saved successfully")
-    except:
-        print("There was a problem while saving the file")
     # Get the date and time
     now = datetime.now ()
     today = now.strftime ("%d/%m/%Y %H:%M:%S")
 
-    # control if the extension to not to overwrite .txt
-    if root.filename[-4] + root.filename[-3] + root.filename[-2] + root.filename[-1] != ".txt":
-        write_file_name = root.filename + ".txt"
-    else:
-        write_file_name = root.filename
-    # Create a file and overwrite if there is already an existing one
-    f = open (write_file_name, "w")
-    # Append to the created file above
-    a = open (write_file_name, "a")
+    # tkinter opens a dialog box to save the file
+    while True:
+        try:
+            root = Tk()
+            root.update()
+            root.withdraw()
+            root.filename =  filedialog.asksaveasfilename(initialdir = global_variables.current_directory,title = "Save as",filetypes = (("txt files","*.txt"),("all files","*.*")))
+            root.destroy()
 
-    f.write ("Inputs:\n"
-             "Velocity = " + str (global_variables.velocity) + " [m/s]\n"
-             "Domain size (X): " + str (global_variables.domain_x) + " [m]\n"
-             "Domain_size (Y): " + str (global_variables.domain_y) + " [m]\n"
-             "Domain_size (Z): " + str (global_variables.domain_z) + " [m]\n")
-    if global_variables.altitude_choice == 1:
-        a.write ("Altitude: " + str (global_variables.altitude) + " [m]\n")
-    elif global_variables.altitude_choice == 2:
-        a.write ("Density: " + str (global_variables.density) + " [kg/m^3]\n"
-                 "Dynamic Viscosity: " + str (global_variables.dynamic_viscosity) + " [Pa*s]\n")
-    if global_variables.thermal_choice == 1:
-        a.write ("Temperature: " + str (global_variables.temperature) + " [Celsius]\n")
-    elif global_variables.thermal_choice == 2:
-        a.write ("No Thermal condition selected !\n")
-    a.write ("\nOutputs:\n")
-    if global_variables.altitude_choice == 1 and global_variables.thermal_choice == 1:
-        a.write ("Density: " + str ('{:.3f}'.format (global_variables.density)) + " [kg/m^3]\n"
-                 "Dynamic Viscosity: " + str ('{:.7f}'.format (global_variables.dynamic_viscosity)) + " [Pa*s]\n"
-                 "Kinematic Viscosity: " + str ('{:.7f}'.format (global_variables.kinematic_viscosity)) + " [m^2/s]\n"
-                 "Pressure: " + str ('{:.3f}'.format (global_variables.pressure)) + " [kPa]\n"
-                 "Prandtl number: " + str ('{:.3f}'.format (global_variables.prandtl)) + " [-]\n"
-                 "Thermal Conductivity: " + str ('{:.5f}'.format (global_variables.thermal_conductivity))
-                 + " [W/(m.K)]\n"
-                 "Isobaric specific heat: " + str ('{:.3f}'.format (global_variables.isobaric_specific_heat))
-                 + " [kJ/(kg.K)]\n")
-    if global_variables.altitude_choice == 1 and global_variables.thermal_choice == 2:
-        a.write ("Density: " + str ('{:.3f}'.format (global_variables.density)) + " [kg/m^3]\n"
-                 "Dynamic Viscosity: " + str ('{:.7f}'.format (global_variables.dynamic_viscosity)) + " [Pa*s]\n"
-                 "Kinematic Viscosity: " + str ('{:.7f}'.format (global_variables.kinematic_viscosity)) + " [m^2/s]\n"
-                 "Pressure: " + str ('{:.3f}'.format (global_variables.pressure)) + " [kPa]\n")
+            # control if the extension to not to overwrite .txt
+            if root.filename[-4] + root.filename[-3] + root.filename[-2] + root.filename[-1] != ".txt":
+                write_file_name = root.filename + ".txt"
+            else:
+                write_file_name = root.filename
+            if root.filename == "":
+                break
+            # Create a file and overwrite if there is already an existing one
+            f = open (write_file_name, "w")
+            # Append to the created file above
+            a = open (write_file_name, "a")
 
-    if global_variables.altitude_choice == 2 and global_variables.thermal_choice == 1:
-        a.write ("Pressure: " + str ('{:.3f}'.format (global_variables.pressure)) + " [kPa]\n"
-                 "Thermal Conductivity: " + str ('{:.3f}'.format (global_variables.thermal_conductivity))
-                 + " [W/(m*K)]\n"
-                 "Specific heat constant (Cp): " + str ('{:.3f}'.format (global_variables.isobaric_specific_heat))
-                 + " [J/(kg*K)]\n" + "Prandtl number: " + str ('{:.3f}'.format (global_variables.prandtl)) + " [-]\n")
+            f.write ("Inputs:\n"
+                     "Velocity = " + str (global_variables.velocity) + " [m/s]\n"
+                     "Domain size (X): " + str (global_variables.domain_x) + " [m]\n"
+                     "Domain_size (Y): " + str (global_variables.domain_y) + " [m]\n"
+                     "Domain_size (Z): " + str (global_variables.domain_z) + " [m]\n")
+            if global_variables.altitude_choice == 1:
+                a.write ("Altitude: " + str (global_variables.altitude) + " [m]\n")
+            elif global_variables.altitude_choice == 2:
+                a.write ("Density: " + str (global_variables.density) + " [kg/m^3]\n"
+                         "Dynamic Viscosity: " + str (global_variables.dynamic_viscosity) + " [Pa*s]\n")
+            if global_variables.thermal_choice == 1:
+                a.write ("Temperature: " + str (global_variables.temperature) + " [Celsius]\n")
+            elif global_variables.thermal_choice == 2:
+                a.write ("No Thermal condition selected !\n")
+            a.write ("\nOutputs:\n")
+            if global_variables.altitude_choice == 1 and global_variables.thermal_choice == 1:
+                a.write ("Density: " + str ('{:.3f}'.format (global_variables.density)) + " [kg/m^3]\n"
+                         "Dynamic Viscosity: " + str ('{:.7f}'.format (global_variables.dynamic_viscosity)) + " [Pa*s]\n"
+                         "Kinematic Viscosity: " + str ('{:.7f}'.format (global_variables.kinematic_viscosity)) + " [m^2/s]\n"
+                         "Pressure: " + str ('{:.3f}'.format (global_variables.pressure)) + " [kPa]\n"
+                         "Prandtl number: " + str ('{:.3f}'.format (global_variables.prandtl)) + " [-]\n"
+                         "Thermal Conductivity: " + str ('{:.5f}'.format (global_variables.thermal_conductivity))
+                         + " [W/(m.K)]\n"
+                         "Isobaric specific heat: " + str ('{:.3f}'.format (global_variables.isobaric_specific_heat))
+                         + " [kJ/(kg.K)]\n")
+            if global_variables.altitude_choice == 1 and global_variables.thermal_choice == 2:
+                a.write ("Density: " + str ('{:.3f}'.format (global_variables.density)) + " [kg/m^3]\n"
+                         "Dynamic Viscosity: " + str ('{:.7f}'.format (global_variables.dynamic_viscosity)) + " [Pa*s]\n"
+                         "Kinematic Viscosity: " + str ('{:.7f}'.format (global_variables.kinematic_viscosity)) + " [m^2/s]\n"
+                         "Pressure: " + str ('{:.3f}'.format (global_variables.pressure)) + " [kPa]\n")
 
-    if global_variables.altitude_choice == 1 and global_variables.thermal_choice == 2:
-        a.write ("Pressure: " + str ('{:.3f}'.format (global_variables.pressure)) + " [kPa]\n")
-    a.write ("Reynolds Number: " + str ('{:.0f}'.format (global_variables.reynolds)) + " [-]\n"
-             "Turbulence Intensity: " + str ('{:.3f}'.format (global_variables.turbulence_intensity)) + " [%]\n"
-             "Turbulence Length Scale: " + str ('{:.5f}'.format (global_variables.turbulence_length_scale)) + " [m]\n"
-             "Turbulence Kinetic Energy (k): " + str ('{:.5f}'.format (global_variables.turbulence_kinetic_energy))
-             + " [m^2/s^2]\n"
-             "Turbulence Dissipation Rate (epsilon): "
-             + str ('{:.5f}'.format (global_variables.turbulence_dissipation_rate)) + " [m^2/s^3]\n"
-             "Turbulence Specific Dissipation Rate (omega): "
-             + str ('{:.3f}'.format (global_variables.turbulence_specific_dissipation_rate)) + " [1/s]\n")
+            if global_variables.altitude_choice == 2 and global_variables.thermal_choice == 1:
+                a.write ("Pressure: " + str ('{:.3f}'.format (global_variables.pressure)) + " [kPa]\n"
+                         "Thermal Conductivity: " + str ('{:.3f}'.format (global_variables.thermal_conductivity))
+                         + " [W/(m*K)]\n"
+                         "Specific heat constant (Cp): " + str ('{:.3f}'.format (global_variables.isobaric_specific_heat))
+                         + " [J/(kg*K)]\n" + "Prandtl number: " + str ('{:.3f}'.format (global_variables.prandtl)) + " [-]\n")
 
-    # Check if user selected the function
-    if global_variables.input_yplus != 0:
-        a.write ("\nWall Space Calculation\n"
-                 "Input:\n"
-                 "Desired y+ value: " + str (global_variables.input_yplus) + " [-]\n"
-                 "Output:\n"
-                 "Required First Layer Thickness: " + str ('{:.3f}'.format (global_variables.first_layer_thickness))
-                 + " [m]\n")
-    # Check if user selected the function
-    if global_variables.input_permeability != 0 and global_variables.input_porous_thickness != 0:
-        a.write ("\nPermeability Calculation\n"
-                 "Input:\n"
-                 "Desired Permeability: " + str (global_variables.input_permeability) + " [%]\n"
-                 "Geometry Thickness: " + str (global_variables.input_porous_thickness) + " [m]\n"
-                 "Output:\n"
-                 "Resistance coefficient: " + str ('{:.3f}'.format (global_variables.permeability_resistance))
-                 + " [1/m]\n")
-    a.write("\nDate and Time: " + str(today))
-    f.close()
-    a.close()
+            if global_variables.altitude_choice == 1 and global_variables.thermal_choice == 2:
+                a.write ("Pressure: " + str ('{:.3f}'.format (global_variables.pressure)) + " [kPa]\n")
+            a.write ("Reynolds Number: " + str ('{:.0f}'.format (global_variables.reynolds)) + " [-]\n"
+                     "Turbulence Intensity: " + str ('{:.3f}'.format (global_variables.turbulence_intensity)) + " [%]\n"
+                     "Turbulence Length Scale: " + str ('{:.5f}'.format (global_variables.turbulence_length_scale)) + " [m]\n"
+                     "Turbulence Kinetic Energy (k): " + str ('{:.5f}'.format (global_variables.turbulence_kinetic_energy))
+                     + " [m^2/s^2]\n"
+                     "Turbulence Dissipation Rate (epsilon): "
+                     + str ('{:.5f}'.format (global_variables.turbulence_dissipation_rate)) + " [m^2/s^3]\n"
+                     "Turbulence Specific Dissipation Rate (omega): "
+                     + str ('{:.3f}'.format (global_variables.turbulence_specific_dissipation_rate)) + " [1/s]\n")
+
+            # Check if user selected the function
+            if global_variables.input_yplus != 0:
+                a.write ("\nWall Space Calculation\n"
+                         "Input:\n"
+                         "Desired y+ value: " + str (global_variables.input_yplus) + " [-]\n"
+                         "Output:\n"
+                         "Required First Layer Thickness: " + str ('{:.3f}'.format (global_variables.first_layer_thickness))
+                         + " [m]\n")
+            # Check if user selected the function
+            if global_variables.input_permeability != 0 and global_variables.input_porous_thickness != 0:
+                a.write ("\nPermeability Calculation\n"
+                         "Input:\n"
+                         "Desired Permeability: " + str (global_variables.input_permeability) + " [%]\n"
+                         "Geometry Thickness: " + str (global_variables.input_porous_thickness) + " [m]\n"
+                         "Output:\n"
+                         "Resistance coefficient: " + str ('{:.3f}'.format (global_variables.permeability_resistance))
+                         + " [1/m]\n")
+            a.write("\nDate and Time: " + str(today))
+            f.close()
+            a.close()
+            root.filename = ""  #clear the filename
+            print("File Saved successfully")
+            break
+        except:
+            print("There was a problem while saving the file")
+            break
 
 def wall_space_calculator():
     print ("\t\tWall Space Calculation\n")
