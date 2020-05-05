@@ -15,6 +15,7 @@ def linear_interpolator(input_value, array_compare, array_result):
             array_result[position] - array_result[position - 1]) + array_result[position - 1]
 
 def user_input(input_variable, variable_string, variable_dimension):
+    # in this user_input function input can be 0
     input_variable = 0
     while not global_variables.error:
         try:
@@ -24,6 +25,23 @@ def user_input(input_variable, variable_string, variable_dimension):
 
             # Exit the loop if conditions are met
             if not global_variables.error and input_variable >= 0:
+                break
+        except ValueError:
+            print ("Invalid Input!")
+    return input_variable
+
+def user_input_0(input_variable, variable_string, variable_dimension):
+    # in this user_input function input can't be 0
+    input_variable = 0
+    while not global_variables.error:
+        try:
+            # Assign the input as float to the variable and return to the variable
+            input_variable = float (input ("Enter your " + variable_string + " value" +
+                                           " [" + variable_dimension + "]" + ": "))
+            if input_variable <= 0:
+                print("Input can't be 0 or negative!")
+            # Exit the loop if conditions are met
+            if not global_variables.error and input_variable > 0:
                 break
         except ValueError:
             print ("Invalid Input!")
@@ -58,13 +76,13 @@ def input_function():
                                 global_variables.velocity_component_y**2 + \
                                 global_variables.velocity_component_z**2)** 0.5
     # Domain X length [m]
-    global_variables.domain_x = user_input (global_variables.domain_x, \
+    global_variables.domain_x = user_input_0 (global_variables.domain_x, \
                                             "Domain size dimension(X)", "m")
     # Domain Y length [m]
-    global_variables.domain_y = user_input (global_variables.domain_y, \
+    global_variables.domain_y = user_input_0 (global_variables.domain_y, \
                                             "Domain size dimension(Y)", "m")
     # Domain Z length (downstream) [m]
-    global_variables.domain_z = user_input (global_variables.domain_z, \
+    global_variables.domain_z = user_input_0 (global_variables.domain_z, \
                                             "Domain size dimension(Z)", "m")
 
     # Enter Altitude choice to automatically determine dry air properties or to do manual input of all air properties
@@ -97,10 +115,10 @@ def input_function():
         global_variables.pressure = linear_interpolator (global_variables.altitude, global_variables.Altitude,
                                                          global_variables.Pressure)
     if global_variables.altitude_choice == 2:
-        global_variables.density = user_input (global_variables.density, "Density", "kg/m^3")
-        global_variables.dynamic_viscosity = user_input (global_variables.dynamic_viscosity, "Dynamic Viscosity",
+        global_variables.density = user_input_0 (global_variables.density, "Density", "kg/m^3")
+        global_variables.dynamic_viscosity = user_input_0 (global_variables.dynamic_viscosity, "Dynamic Viscosity",
                                                          "Pa*s")
-        global_variables.pressure = user_input (global_variables.pressure, "Pressure", "kPa")
+        global_variables.pressure = user_input_0 (global_variables.pressure, "Pressure", "kPa")
 
     # Enter Thermal choice to automatically (linear interpolation from the Tuples) determine dry air thermal properties
     # (Yes if 1 No if 2)
@@ -224,7 +242,7 @@ def write_function():
         root = Tk()
         root.update()
         root.withdraw()
-        root.filename =  filedialog.asksaveasfile(initialdir = global_variables.current_directory,title = "Save as",filetypes = (("txt files","*.txt"),("all files","*.*")))
+        root.filename =  filedialog.asksaveasfilename(initialdir = global_variables.current_directory,title = "Save as",filetypes = (("txt files","*.txt"),("all files","*.*")))
         root.destroy()
         print("File Saved successfully")
     except:
@@ -233,13 +251,15 @@ def write_function():
     now = datetime.now ()
     today = now.strftime ("%d/%m/%Y %H:%M:%S")
 
-    # write_file_name = input ("Enter the file name: ")
-    write_file_name = str(root.filename) + ".txt"
-    print(write_file_name)
+    # control if the extension to not to overwrite .txt
+    if root.filename[-4] + root.filename[-3] + root.filename[-2] + root.filename[-1] != ".txt":
+        write_file_name = root.filename + ".txt"
+    else:
+        write_file_name = root.filename
     # Create a file and overwrite if there is already an existing one
-    f = open (write_file_name, "w", encoding="utf8")
+    f = open (write_file_name, "w")
     # Append to the created file above
-    a = open (write_file_name, "a", encoding="utf8")
+    a = open (write_file_name, "a")
 
     f.write ("Inputs:\n"
              "Velocity = " + str (global_variables.velocity) + " [m/s]\n"
@@ -311,7 +331,6 @@ def write_function():
     a.write("\nDate and Time: " + str(today))
     f.close()
     a.close()
-
 
 def wall_space_calculator():
     print ("\t\tWall Space Calculation\n")
