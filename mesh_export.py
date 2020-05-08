@@ -7,6 +7,7 @@ import global_variables
 
 # assign the mesh input as a global variable to be able to use in another function
 
+
 def select_mesh():
 	# read the boundary conditions from the .msh file
 	# tkinter opens a dialog box to select the .msh file
@@ -22,7 +23,6 @@ def select_mesh():
 		print("Mesh imported successfully")
 	except:
 		print("There was a problem while importing .msh file")
-
 
 
 def bc_reader(parser_name_bc, output_boundaries = list()):

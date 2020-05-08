@@ -6,6 +6,8 @@ import os
 from tkinter import filedialog
 from tkinter import *
 clear = lambda: os.system('cls')
+
+
 def linear_interpolator(input_value, array_compare, array_result):
     position = 0
     for index in range (global_variables.array_length):
@@ -30,6 +32,7 @@ def user_input(input_variable, variable_string, variable_dimension):
             print ("Invalid Input!")
     return input_variable
 
+
 def user_input_0(input_variable, variable_string, variable_dimension):
     # in this user_input function input can't be 0
     input_variable = 0
@@ -46,6 +49,7 @@ def user_input_0(input_variable, variable_string, variable_dimension):
         except ValueError:
             print ("Invalid Input!")
     return input_variable
+
 
 def input_function():
     clear()
@@ -191,6 +195,7 @@ def input_function():
                                                             (global_variables.Cmu
                                                              * global_variables.turbulence_length_scale)
 
+
 def permeability_calculator():
     print ("\t\t Permeability Calculation\n")
     while not global_variables.error:
@@ -212,6 +217,7 @@ def permeability_calculator():
     global_variables.permeability_resistance = (1 / pow (f, 2)) * pow ((0.707 * pow ((1 - f), 0.5) + 1 - f), 2) \
                                                / global_variables.input_porous_thickness
     print ("Permeability resistance: ", '{:.2f}'.format(global_variables.permeability_resistance))
+
 
 def print_function():
     print ("\n\t\t#####PRINTED VALUES#####")
@@ -235,6 +241,7 @@ def print_function():
         print ("Thermal Conductivity [W/(m.K)]: ", '{:.5f}'.format (global_variables.thermal_conductivity))
         print ("Prandtl number [-]: ", '{:.3f}'.format (global_variables.prandtl))
         print ("Isobaric specific heat [kJ/(kg.K)]: ", '{:.3f}'.format (global_variables.isobaric_specific_heat))
+
 
 def write_function():
     # Get the date and time
@@ -339,6 +346,7 @@ def write_function():
             print("There was a problem while saving the file")
             break
 
+
 def wall_space_calculator():
     print ("\t\tWall Space Calculation\n")
     while not global_variables.error:
@@ -358,6 +366,7 @@ def wall_space_calculator():
     global_variables.first_layer_thickness = global_variables.dynamic_viscosity * global_variables.input_yplus \
                                              / frictional_velocity / global_variables.density
     print ("First layer thickness[m]: ", '{:.5f}'.format(global_variables.first_layer_thickness))
+
 
 def openfoam_model():
     clear()
@@ -446,6 +455,7 @@ def openfoam_model():
     file_creator.write_system_files()
     file_creator.create_working_directory(R"\openfoam_inputs\constant") #create the constant directory
     file_creator.write_constant_files()
+
 
 def main_menu():
     clear()

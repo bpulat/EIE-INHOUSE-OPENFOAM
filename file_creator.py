@@ -23,6 +23,7 @@ def create_working_directory(directory_name):
 		print("Successfully created the directory %s " % openfoam_inputs)
 	# Create the working directory
 
+
 class Incompressible:
 	def __init__(self, file_type, dimension_output, format_type, wall_type, inlet_type):
 		self.file_type = file_type
@@ -30,6 +31,7 @@ class Incompressible:
 		self.format_type = format_type
 		self.wall_type = wall_type
 		self.inlet_type = inlet_type
+
 
 	def file_0_creator(self):
 	# R is used to assign escape character \
@@ -156,6 +158,7 @@ class Incompressible:
 		f.close()
 		a.close()
 
+
 def write_0_files():
 		# assign the properties
 	if global_variables.incompressible_ras_turbulence_model == 1:
@@ -172,6 +175,7 @@ def write_0_files():
 	nut.file_0_creator()
 	p.file_0_creator()
 
+
 def write_system_files():
 	with open(openfoam_inputs + R"\fvSchemes", "w", errors='ignore') as f:
 		f.write(fvSchemes.fvschemes)
@@ -181,6 +185,7 @@ def write_system_files():
 		f.write(controldict.control_dict)
 	with open(openfoam_inputs + R"\decomposer", "w", errors='ignore') as f:
 		f.write(decomposer.decomposepar)
+
 
 def write_constant_files():
 	with open(openfoam_inputs + R"\porosityProperties", "w", errors='ignore') as f:
