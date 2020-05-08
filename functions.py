@@ -16,6 +16,7 @@ def linear_interpolator(input_value, array_compare, array_result):
     return ((input_value - array_compare[position - 1]) / (array_compare[position] - array_compare[position - 1])) * (
             array_result[position] - array_result[position - 1]) + array_result[position - 1]
 
+
 def user_input(input_variable, variable_string, variable_dimension):
     # in this user_input function input can be 0
     input_variable = 0
