@@ -217,10 +217,10 @@ def print_function():
     print ("\n\t\t#####PRINTED VALUES#####")
     # Print all the output variables by checking the input variables
     if global_variables.altitude_choice == 1:
-        print ("Density [kg/m^3]: " + str (global_variables.density))
-        print ("Dynamic Viscosity [Pa*s]: " + str ('{:.7f}'.format (global_variables.dynamic_viscosity)))
-        print ("Pressure [kPa]: " + str ('{:.3f}'.format (global_variables.pressure)))
-    print ("Kinematic Viscosity [m^2/s]: " + str ('{:.7f}'.format (global_variables.kinematic_viscosity)))
+        print (f"Density [kg/m^3]: {global_variables.density}")
+        print (f"Dynamic Viscosity [Pa*s]: {global_variables.dynamic_viscosity:.2e}")
+        print (f"Pressure [kPa]: " + str ('{:.3f}'.format (global_variables.pressure)))
+    print (f"Kinematic Viscosity [m^2/s]: {global_variables.kinematic_viscosity:.2e}")
     print ("Reynolds Number [-]: ", '{:.0f}'.format (global_variables.reynolds))
     print ("Turbulence Intensity [%]: ", '{:.3f}'.format (global_variables.turbulence_intensity))
     print ("Turbulence Length Scale [m]: ", '{:.5f}'.format (global_variables.turbulence_length_scale))

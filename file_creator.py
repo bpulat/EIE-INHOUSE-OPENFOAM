@@ -223,12 +223,12 @@ def write_constant_files():
 		Write external files inside constant folder (ex. porosityProperties,
 		turbulenceproperties, transportProperties)
 	'''
-	with open(openfoam_inputs + R"\porosityProperties", "w", errors='ignore')
+	with open(openfoam_inputs + R"\porosityProperties", "w", errors='ignore')\
 	as f:
 		f.write(porosityProp.prsty_prop)
-	with open(openfoam_inputs + R"\turbulenceProperties", "w", errors='ignore')
+	with open(openfoam_inputs + R"\turbulenceProperties", "w", errors='ignore')\
 	as f:
 		f.write(turbulence_prop.turb_prop)
-	with open(openfoam_inputs + R"\transportProperties", "w", errors='ignore')
+	with open(openfoam_inputs + R"\transportProperties", "w", errors='ignore')\
 	as f:
 		f.write(transportproperties.trans_prop)
