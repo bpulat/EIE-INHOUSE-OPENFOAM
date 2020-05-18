@@ -11,6 +11,7 @@ import global_variables
 def select_mesh():
 	# read the boundary conditions from the .msh file
 	# tkinter opens a dialog box to select the .msh file
+	print("Select your .msh file location")
 	root = Tk()
 	root.update()
 	root.withdraw()

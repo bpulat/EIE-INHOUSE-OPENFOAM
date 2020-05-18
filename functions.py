@@ -5,7 +5,7 @@ import mesh_export
 import os
 from tkinter import filedialog
 from tkinter import *
-clear = lambda: os.system('cls')
+clear = lambda: os.system('cls') # lambda function to clear prompt
 
 
 def linear_interpolator(input_value, array_compare, array_result):

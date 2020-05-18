@@ -39,6 +39,7 @@ class Incompressible:
 		self.inlet_type = inlet_type
 
 
+
 	def file_0_creator(self):
 		'''
 			Function of creating all 0 files
@@ -49,9 +50,9 @@ class Incompressible:
 		file_name = Rf"\{self.file_type}"
 		file_location = openfoam_inputs + file_name
 
-		def inner_velocity_creator(input_bc, output_inlet):
+		def inlet_condition_creator(input_bc, output_inlet):
 			'''
-				To create velocity condition
+				To create inlet condition
 			'''
 			if self.file_type == "p":
 				for i in range(len(input_bc)):
@@ -59,25 +60,70 @@ class Incompressible:
 					"\t{\n"
 					f"\t\ttype\t\t\t{self.inlet_type};\n"
 					"\t}\n")
+			elif self.file_type == "U":
+				for i in range(len(input_bc)):
+					output_inlet.append(f"\t{input_bc[i]}\n"
+					"\t{\n"
+					f"\t\ttype\t\t\t{self.inlet_type};\n"
+					f"\t\tvalue\t\t\tuniform ({global_variables.velocity_component_x:.0f} {global_variables.velocity_component_y:.0f} {global_variables.velocity_component_z:.0f});\n"
+					"\t}\n")
+			elif self.file_type == "epsilon":
+				for i in range(len(input_bc)):
+					output_inlet.append(f"\t{input_bc[i]}\n"
+					"\t{\n"
+					"\t\ttype\t\t\tturbulentMixingLengthDissipationRateInlet;\n"
+					f"\t\tmixingLength\t{global_variables.turbulence_length_scale};\n"
+					"\t\tvalue\t\t\t$internalField;\n"
+					"\t}\n")
+			elif self.file_type == "k":
+				for i in range(len(input_bc)):
+					output_inlet.append(f"\t{input_bc[i]}\n"
+					"\t{\n"
+					f"\t\ttype\t\t\t{self.inlet_type};\n"
+					f"\t\tvalue\t\t\t$internalField;\n"
+					"\t}\n")
 			else:
 				for i in range(len(input_bc)):
 					output_inlet.append(f"\t{input_bc[i]}\n"
 					"\t{\n"
 					f"\t\ttype\t\t\t{self.inlet_type};\n"
-					"\t\tvalue\t\t\t$internalField\n"
+					f"\t\tvalue\t\t\t$internalField;\n"
 					"\t}\n")
-		def inner_pressure_creator(input_bc, output_bc):
+		def outlet_condition_creator(input_bc, output_bc):
 			'''
-				To create pressure conditions
+				To create outlet conditions
 			'''
-			for i in range(len(input_bc)):
-				output_bc.append(f"\t{input_bc[i]}\n"
-				"\t{\n"
-				"\t\ttype\t\t\tinletOutlet;\n"
-				"\t\tinletValue\t\tuniform (0 0 0);\n"
-				"\t\tvalue\t\t\t$internalField;\n"
-				"\t}\n")
-		def inner_wall_creator(input_bc, output_bc):
+			if self.file_type == "epsilon" or self.file_type == "k":
+				for i in range(len(input_bc)):
+					output_bc.append(f"\t{input_bc[i]}\n"
+					"\t{\n"
+					"\t\ttype\t\t\tinletOutlet;\n"
+					"\t\tinletValue\t\t$internalField;\n"
+					"\t\tvalue\t\t\t$internalField;\n"
+					"\t}\n")
+			elif self.file_type == "nut":
+				for i in range(len(input_bc)):
+					output_bc.append(f"\t{input_bc[i]}\n"
+					"\t{\n"
+					"\t\ttype\t\t\tcalculated;\n"
+					"\t\tvalue\t\t\t$internalField;\n"
+					"\t}\n")
+			elif self.file_type == "p":
+				for i in range(len(input_bc)):
+					output_bc.append(f"\t{input_bc[i]}\n"
+					"\t{\n"
+					"\t\ttype\t\t\tfixedValue;\n"
+					"\t\tvalue\t\t\t$internalField;\n"
+					"\t}\n")
+			elif self.file_type == "U":
+				for i in range(len(input_bc)):
+					output_bc.append(f"\t{input_bc[i]}\n"
+					"\t{\n"
+					"\t\ttype\t\t\tinletOutlet;\n"
+					"\t\tinletValue\t\tuniform (0 0 0);\n"
+					"\t\tvalue\t\t\t$internalField;\n"
+					"\t}\n")
+		def wall_condition_creator(input_bc, output_bc):
 			'''
 				To create wall condition
 			'''
@@ -121,7 +167,7 @@ class Incompressible:
 					"\t{\n"
 					f"\t\ttype\t\t\t{self.wall_type};\n"
 					"\t}\n")
-		def inner_symmetry_creator(input_bc, output_bc):
+		def symmetry_condition_creator(input_bc, output_bc):
 			'''
 				To create symmetry condition
 			'''
@@ -137,10 +183,10 @@ class Incompressible:
 		output_wall = list()
 		output_symmetry = list()
 		# use the inner functions
-		inner_velocity_creator(global_variables.inlet_output, output_inlet)
-		inner_pressure_creator(global_variables.outlet_output, output_outlet)
-		inner_wall_creator(global_variables.wall_output, output_wall)
-		inner_symmetry_creator(global_variables.symmetry_output, output_symmetry)
+		inlet_condition_creator(global_variables.inlet_output, output_inlet)
+		outlet_condition_creator(global_variables.outlet_output, output_outlet)
+		wall_condition_creator(global_variables.wall_output, output_wall)
+		symmetry_condition_creator(global_variables.symmetry_output, output_symmetry)
 		# Create a file and overwrite if there is already an existing one
 		f = open (file_location,"w")
 	    # Append to the created file above
@@ -163,11 +209,19 @@ class Incompressible:
 				"}\n"
 				"// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //\n"
 				"\n"
-				f"dimensions      {self.dimension_output};\n\n"
-				"internalField   uniform (0 0 0);\n"
-				"\n"
-				"boundaryField\n"
-				"{\n")
+				f"dimensions      {self.dimension_output};\n\n")
+		if self.file_type == "k":
+			a.write(f"internalField	  uniform {global_variables.turbulence_kinetic_energy};\n")
+		elif self.file_type == "omega":
+			a.write(f"internalField	  uniform {global_variables.turbulence_specific_dissipation_rate};\n")
+		elif self.file_type == "epsilon":
+			a.write(f"internalField	  uniform {global_variables.turbulence_dissipation_rate};\n")
+		else:
+			a.write("internalField	  uniform 0;\n")
+		a.write("\n"
+			"boundaryField\n"
+			"{\n")
+
 		for i in range(len(output_inlet)):
 			a.write(f"{output_inlet[i]}\n")
 		for i in range(len(output_outlet)):
@@ -199,7 +253,7 @@ def write_0_files():
 	"fixedValue")
 	nut = Incompressible("nut", "[0 1 -1 0 0 0 0]", "binary",
 	"nutkWallFunction",	"fixedValue")
-	p = Incompressible("p", "[0 1 -1 0 0 0 0]", "binary", "zeroGradient",
+	p = Incompressible("p", "[0 2 -2 0 0 0 0]", "binary", "zeroGradient",
 	"zeroGradient")
 	u.file_0_creator()
 	turbulence_prop.file_0_creator()
