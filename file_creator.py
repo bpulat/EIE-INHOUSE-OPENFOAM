@@ -11,6 +11,9 @@ import turbulence_prop
 import transportproperties
 # Get the current directory and create the input folder
 def create_working_directory(directory_name):
+	'''
+		This function creates the directory for your openfoam files
+	'''
 	global openfoam_inputs
 	file_location = os.getcwd ()
 	openfoam_inputs = file_location + directory_name
@@ -25,6 +28,9 @@ def create_working_directory(directory_name):
 
 
 class Incompressible:
+	'''
+		The class for incompressible 0 files (0 files of openfoam)
+	'''
 	def __init__(self, file_type, dimension_output, format_type, wall_type, inlet_type):
 		self.file_type = file_type
 		self.dimension_output = dimension_output
@@ -34,12 +40,19 @@ class Incompressible:
 
 
 	def file_0_creator(self):
+		'''
+			Function of creating all 0 files
+			There are inner functions for creating different boundary conditions
+		'''
 	# R is used to assign escape character \
 	# f is used to assign file_type in the string
 		file_name = Rf"\{self.file_type}"
 		file_location = openfoam_inputs + file_name
 
 		def inner_velocity_creator(input_bc, output_inlet):
+			'''
+				To create velocity condition
+			'''
 			if self.file_type == "p":
 				for i in range(len(input_bc)):
 					output_inlet.append(f"\t{input_bc[i]}\n"
@@ -54,6 +67,9 @@ class Incompressible:
 					"\t\tvalue\t\t\t$internalField\n"
 					"\t}\n")
 		def inner_pressure_creator(input_bc, output_bc):
+			'''
+				To create pressure conditions
+			'''
 			for i in range(len(input_bc)):
 				output_bc.append(f"\t{input_bc[i]}\n"
 				"\t{\n"
@@ -62,6 +78,9 @@ class Incompressible:
 				"\t\tvalue\t\t\t$internalField;\n"
 				"\t}\n")
 		def inner_wall_creator(input_bc, output_bc):
+			'''
+				To create wall condition
+			'''
 			if self.file_type == "U":
 				for i in range(len(input_bc)):
 					output_bc.append(f"\t{input_bc[i]}\n"
@@ -103,17 +122,21 @@ class Incompressible:
 					f"\t\ttype\t\t\t{self.wall_type};\n"
 					"\t}\n")
 		def inner_symmetry_creator(input_bc, output_bc):
+			'''
+				To create symmetry condition
+			'''
 			for i in range(len(input_bc)):
 				output_bc.append(f"\t{input_bc[i]}\n"
 				"\t{\n"
 				"\t\ttype\t\t\tsymmetry;\n"
 				"\t}\n")
 
-		#define-the outputs
+		# create output variables
 		output_inlet = list()
 		output_outlet = list()
 		output_wall = list()
 		output_symmetry = list()
+		# use the inner functions
 		inner_velocity_creator(global_variables.inlet_output, output_inlet)
 		inner_pressure_creator(global_variables.outlet_output, output_outlet)
 		inner_wall_creator(global_variables.wall_output, output_wall)
@@ -160,15 +183,24 @@ class Incompressible:
 
 
 def write_0_files():
-		# assign the properties
+	'''
+		Assign the class objects and use the main class function to create
+		initial openfoam files (files inside the 0 folder)
+	'''
 	if global_variables.incompressible_ras_turbulence_model == 1:
-		turbulence_prop = Incompressible("epsilon", "[0 2 -3 0 0 0 0]", "binary", "epsilonWallFunction", "turbulentMixingLengthDissipationRateInlet")
+		turbulence_prop = Incompressible("epsilon", "[0 2 -3 0 0 0 0]",
+		"binary", "epsilonWallFunction",
+		"turbulentMixingLengthDissipationRateInlet")
 	if global_variables.incompressible_ras_turbulence_model == 2:
-		turbulence_prop = Incompressible("omega", "[0 1 -1 0 0 0 0]", "binary", "omegaWallFunction", "fixedValue")
+		turbulence_prop = Incompressible("omega", "[0 1 -1 0 0 0 0]", "binary",
+		"omegaWallFunction", "fixedValue")
 	u = Incompressible("U", "[0 1 -1 0 0 0 0]", "ascii", "noSlip", "fixedValue")
-	k = Incompressible("k", "[0 2 -2 0 0 0 0]", "binary", "kqRWallFunction", "fixedValue")
-	nut = Incompressible("nut", "[0 1 -1 0 0 0 0]", "binary", "nutkWallFunction", "fixedValue")
-	p = Incompressible("p", "[0 1 -1 0 0 0 0]", "binary", "zeroGradient", "zeroGradient")
+	k = Incompressible("k", "[0 2 -2 0 0 0 0]", "binary", "kqRWallFunction",
+	"fixedValue")
+	nut = Incompressible("nut", "[0 1 -1 0 0 0 0]", "binary",
+	"nutkWallFunction",	"fixedValue")
+	p = Incompressible("p", "[0 1 -1 0 0 0 0]", "binary", "zeroGradient",
+	"zeroGradient")
 	u.file_0_creator()
 	turbulence_prop.file_0_creator()
 	k.file_0_creator()
@@ -177,6 +209,10 @@ def write_0_files():
 
 
 def write_system_files():
+	'''
+		Write external files inside system folder (ex. fvSchemes, fvSolution,
+		controldict, decomposepardict)
+	'''
 	with open(openfoam_inputs + R"\fvSchemes", "w", errors='ignore') as f:
 		f.write(fvSchemes.fvschemes)
 	with open(openfoam_inputs + R"\fvSolution", "w", errors='ignore') as f:
@@ -188,9 +224,16 @@ def write_system_files():
 
 
 def write_constant_files():
-	with open(openfoam_inputs + R"\porosityProperties", "w", errors='ignore') as f:
+	'''
+		Write external files inside constant folder (ex. porosityProperties,
+		turbulenceproperties, transportProperties)
+	'''
+	with open(openfoam_inputs + R"\porosityProperties", "w", errors='ignore')\
+	as f:
 		f.write(porosityProp.prsty_prop)
-	with open(openfoam_inputs + R"\turbulenceProperties", "w", errors='ignore') as f:
+	with open(openfoam_inputs + R"\turbulenceProperties", "w", errors='ignore')\
+	as f:
 		f.write(turbulence_prop.turb_prop)
-	with open(openfoam_inputs + R"\transportProperties", "w", errors='ignore') as f:
+	with open(openfoam_inputs + R"\transportProperties", "w", errors='ignore')\
+	as f:
 		f.write(transportproperties.trans_prop)

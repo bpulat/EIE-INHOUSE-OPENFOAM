@@ -14,7 +14,9 @@ def select_mesh():
 	root = Tk()
 	root.update()
 	root.withdraw()
-	root.filename =  filedialog.askopenfilename(initialdir = "/",title = "Select the mesh file",filetypes = (("msh files","*.msh"),("all files","*.*")))
+	root.filename =  filedialog.askopenfilename(initialdir = "/",title = \
+	"Select the mesh file",filetypes = (("msh files","*.msh"),\
+	("all files","*.*")))
 	root.destroy()
 	print("Importing Mesh variables...")
 	try:
