@@ -180,7 +180,7 @@ def input_function():
                           global_variables.dynamic_viscosity
     boundary_layer_thickness = 0.37 * global_variables.domain_x / pow (reynolds_downstream, 0.2)
     global_variables.turbulence_length_scale = 0.4 * boundary_layer_thickness
-    max_turbulence_length_scale = 0.07 * hydraulic_diameter
+    global_variables.max_turbulence_length_scale = 0.07 * hydraulic_diameter
     # TURBULENCE INTENSITY [%]
     # The estimation here is that the flow is inside a tube
     global_variables.turbulence_intensity = 0.16 * pow (global_variables.reynolds, -0.125) * 100
@@ -231,6 +231,7 @@ def print_function():
     print ("Reynolds Number [-]: ", '{:.0f}'.format (global_variables.reynolds))
     print ("Turbulence Intensity [%]: ", '{:.3f}'.format (global_variables.turbulence_intensity))
     print ("Turbulence Length Scale [m]: ", '{:.5f}'.format (global_variables.turbulence_length_scale))
+    print (f"Max Turbulence Length Scale [m]: {global_variables.max_turbulence_length_scale:.1f}")
     print ("Turbulence Kinetic Energy (k) [m^2/s^2]: ",
            '{:.3f}'.format (global_variables.turbulence_kinetic_energy))
     print ("Turbulence Dissipation Rate (epsilon) [m^2/s^3]: ",
@@ -313,6 +314,7 @@ def write_function():
             a.write ("Reynolds Number: " + str ('{:.0f}'.format (global_variables.reynolds)) + " [-]\n"
                      "Turbulence Intensity: " + str ('{:.3f}'.format (global_variables.turbulence_intensity)) + " [%]\n"
                      "Turbulence Length Scale: " + str ('{:.5f}'.format (global_variables.turbulence_length_scale)) + " [m]\n"
+                     f"Max Turbulence Length Scale: {global_variables.max_turbulence_length_scale:.1f} [%]\n"
                      "Turbulence Kinetic Energy (k): " + str ('{:.5f}'.format (global_variables.turbulence_kinetic_energy))
                      + " [m^2/s^2]\n"
                      "Turbulence Dissipation Rate (epsilon): "
