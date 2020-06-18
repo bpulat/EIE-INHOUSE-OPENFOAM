@@ -202,9 +202,14 @@ class Incompressible:
 				"FoamFile\n"
 				"{\n"
 				"    version     2.0;\n"
-				f"    format      {self.format_type};\n"
-				"    class       volVectorField;\n"
-				"    location    \"0\";\n"
+				f"    format      {self.format_type};\n")
+		if self.file_type == "k" or self.file_type == "nut" or \
+		self.file_type == "p" or self.file_type == "omega" or \
+		self.file_type == "epsilon":
+			a.write("    class       volScalarField;\n")
+		else:
+			a.write("    class       volVectorField;\n")
+		a.write("    location    \"0\";\n"
 				f"    object      {self.file_type};\n"
 				"}\n"
 				"// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //\n"
