@@ -250,13 +250,13 @@ def write_0_files():
 		turbulence_prop = Incompressible("epsilon", "[0 2 -3 0 0 0 0]",
 		"binary", "epsilonWallFunction",
 		"turbulentMixingLengthDissipationRateInlet")
-	if global_variables.incompressible_ras_turbulence_model == 2:
-		turbulence_prop = Incompressible("omega", "[0 1 -1 0 0 0 0]", "binary",
+	elif global_variables.incompressible_ras_turbulence_model == 2:
+		turbulence_prop = Incompressible("omega", "[0 0 -1 0 0 0 0]", "binary",
 		"omegaWallFunction", "fixedValue")
 	u = Incompressible("U", "[0 1 -1 0 0 0 0]", "ascii", "noSlip", "fixedValue")
 	k = Incompressible("k", "[0 2 -2 0 0 0 0]", "binary", "kqRWallFunction",
 	"fixedValue")
-	nut = Incompressible("nut", "[0 1 -1 0 0 0 0]", "binary",
+	nut = Incompressible("nut", "[0 2 -1 0 0 0 0]", "binary",
 	"nutkWallFunction",	"fixedValue")
 	p = Incompressible("p", "[0 2 -2 0 0 0 0]", "binary", "zeroGradient",
 	"zeroGradient")
