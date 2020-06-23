@@ -9,6 +9,9 @@ clear = lambda: os.system('cls') # lambda function to clear prompt
 
 
 def linear_interpolator(input_value, array_compare, array_result):
+    '''
+    Basic linear interpolator to calculate the interpolation values
+    '''
     position = 0
     for index in range (global_variables.array_length):
         if array_compare[position] < input_value:
@@ -18,7 +21,9 @@ def linear_interpolator(input_value, array_compare, array_result):
 
 
 def user_input(input_variable, variable_string, variable_dimension):
-    # in this user_input function input can be 0
+    '''
+    User input function but the input can be 0 or bigger
+    '''
     input_variable = 0
     while not global_variables.error:
         try:
@@ -35,7 +40,10 @@ def user_input(input_variable, variable_string, variable_dimension):
 
 
 def user_input_0(input_variable, variable_string, variable_dimension):
-    # in this user_input function input can't be 0
+
+    '''
+        User input function but the input should be bigger than 0
+    '''
     input_variable = 0
     while not global_variables.error:
         try:
@@ -57,16 +65,16 @@ def input_function():
     print ("\t\t##### WELCOME TO THE CFD INPUT CALCULATOR  #####\n\n" +
            "- This tool is used for calculating CFD inputs with dry air properties.\n" +
            "- Aim of this program is to find characteristics of Turbulent Flows!\n" +
-           "- For the numerical inputs if you enter a character program won't work.\n\n" +
+           "- The software will run properly only on Windows Machines.\n\n" +
            "\t\t\t\t##### INPUTS #####\n")
 
     # GET THE USER INPUTS
-    print("             ------------------               -----------  \n"
-		  "            |                  |             |           | \n"
-		  "     Z      |       SIDE       |     Z       |   FRONT   | \n"
-		  "     ^      |       VIEW       |     ^       |   VIEW    | \n"
-		  "     |      |                  |     |       |           | \n"
-		  "     ---> X  ------------------      ---> Y   -----------  \n\n"
+    print("             ------------------                 -----------  \n"
+		  "            |                  |               |           | \n"
+		  "     Z      |       SIDE       |       Z       |   FRONT   | \n"
+		  "     ^      |       VIEW       |       ^       |   VIEW    | \n"
+		  "     |      |                  |       |       |           | \n"
+		  "     ---> X  ------------------   Y <---        -----------  \n\n"
           " X is the flow direction\n"
           " Z is the domain height\n"
           " Y is the 3rd axis\n")
@@ -198,6 +206,10 @@ def input_function():
 
 
 def permeability_calculator():
+    '''
+    Permability calculator based on Idelchik formulation for the thin perforated
+    plates
+    '''
     print ("\t\t Permeability Calculation\n")
     while not global_variables.error:
         try:
@@ -221,31 +233,34 @@ def permeability_calculator():
 
 
 def print_function():
+    '''
+    Function to print the calculated values to the console
+    '''
     print ("\n\t\t#####PRINTED VALUES#####")
     # Print all the output variables by checking the input variables
     if global_variables.altitude_choice == 1:
         print (f"Density [kg/m^3]: {global_variables.density}")
         print (f"Dynamic Viscosity [Pa*s]: {global_variables.dynamic_viscosity:.2e}")
-        print (f"Pressure [kPa]: " + str ('{:.3f}'.format (global_variables.pressure)))
+        print (f"Pressure [kPa]: {global_variables.pressure:.3f}")
     print (f"Kinematic Viscosity [m^2/s]: {global_variables.kinematic_viscosity:.2e}")
-    print ("Reynolds Number [-]: ", '{:.0f}'.format (global_variables.reynolds))
-    print ("Turbulence Intensity [%]: ", '{:.3f}'.format (global_variables.turbulence_intensity))
-    print ("Turbulence Length Scale [m]: ", '{:.5f}'.format (global_variables.turbulence_length_scale))
-    print (f"Max Turbulence Length Scale [m]: {global_variables.max_turbulence_length_scale:.1f}")
-    print ("Turbulence Kinetic Energy (k) [m^2/s^2]: ",
-           '{:.3f}'.format (global_variables.turbulence_kinetic_energy))
-    print ("Turbulence Dissipation Rate (epsilon) [m^2/s^3]: ",
-           '{:.5f}'.format (global_variables.turbulence_dissipation_rate))
-    print ("Turbulence Specific Dissipation Rate (omega) [1/s]: ",
-           '{:.5f}'.format (global_variables.turbulence_specific_dissipation_rate))
+    print (f"Reynolds Number [-]: {global_variables.reynolds:.2e}")
+    print (f"Turbulence Intensity [%]: {global_variables.turbulence_intensity:.3f}")
+    print (f"Turbulence Length Scale [m]: {global_variables.turbulence_length_scale:.5f}")
+    print (f"Max Turbulence Length Scale [m]: {global_variables.max_turbulence_length_scale:.2f}")
+    print (f"Turbulence Kinetic Energy (k) [m^2/s^2]: {global_variables.turbulence_kinetic_energy:.3f}")
+    print (f"Turbulence Dissipation Rate (epsilon) [m^2/s^3]: {global_variables.turbulence_dissipation_rate:.5f}")
+    print (f"Turbulence Specific Dissipation Rate (omega) [1/s]: {global_variables.turbulence_specific_dissipation_rate:.5f}")
     # Control if the temperature input is selected or not
     if global_variables.thermal_choice == 1:
-        print ("Thermal Conductivity [W/(m.K)]: ", '{:.5f}'.format (global_variables.thermal_conductivity))
-        print ("Prandtl number [-]: ", '{:.3f}'.format (global_variables.prandtl))
-        print ("Isobaric specific heat [kJ/(kg.K)]: ", '{:.3f}'.format (global_variables.isobaric_specific_heat))
+        print (f"Thermal Conductivity [W/(m.K)]: {global_variables.thermal_conductivity:.5f}")
+        print (f"Prandtl number [-]: {global_variables.prandtl:.3f}")
+        print (f"Isobaric specific heat [kJ/(kg.K)]: {global_variables.isobaric_specific_heat:.3f}")
 
 
 def write_function():
+    '''
+    Write the files to a txt file
+    '''
     # Get the date and time
     now = datetime.now ()
     today = now.strftime ("%d/%m/%Y %H:%M:%S")
@@ -309,7 +324,7 @@ def write_function():
                          "Specific heat constant (Cp): " + str ('{:.3f}'.format (global_variables.isobaric_specific_heat))
                          + " [J/(kg*K)]\n" + "Prandtl number: " + str ('{:.3f}'.format (global_variables.prandtl)) + " [-]\n")
 
-            if global_variables.altitude_choice == 1 and global_variables.thermal_choice == 2:
+            if global_variables.altitude_choice == 2 and global_variables.thermal_choice == 2:
                 a.write ("Pressure: " + str ('{:.3f}'.format (global_variables.pressure)) + " [kPa]\n")
             a.write ("Reynolds Number: " + str ('{:.0f}'.format (global_variables.reynolds)) + " [-]\n"
                      "Turbulence Intensity: " + str ('{:.3f}'.format (global_variables.turbulence_intensity)) + " [%]\n"
@@ -351,6 +366,9 @@ def write_function():
 
 
 def wall_space_calculator():
+    '''
+    Calculation for the y+ value
+    '''
     print ("\t\tWall Space Calculation\n")
     while not global_variables.error:
         try:
@@ -372,6 +390,9 @@ def wall_space_calculator():
 
 
 def openfoam_model():
+    '''
+    Menu for the openfoam initiliaser and selections
+    '''
     clear()
     print("\t\tOpenfoam model initiliaser\n")
     # Selection between incompressible and compressible
@@ -461,6 +482,9 @@ def openfoam_model():
 
 
 def main_menu():
+    '''
+    Main menu selection with main loop
+    '''
     clear()
     while True:
         print ("\n\t\t ##### OUTPUT SELECTION #####\n"
