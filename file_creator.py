@@ -56,20 +56,20 @@ class Incompressible:
 			'''
 			if self.file_type == "p":
 				for i in range(len(input_bc)):
-					output_inlet.append(f"\t{input_bc[i]}\n"
+					output_bc.append(f"\t{input_bc[i]}\n"
 					"\t{\n"
 					f"\t\ttype\t\t\t{self.inlet_type};\n"
 					"\t}\n")
 			elif self.file_type == "U":
 				for i in range(len(input_bc)):
-					output_inlet.append(f"\t{input_bc[i]}\n"
+					output_bc.append(f"\t{input_bc[i]}\n"
 					"\t{\n"
 					f"\t\ttype\t\t\t{self.inlet_type};\n"
 					f"\t\tvalue\t\t\tuniform ({global_variables.velocity_component_x:.0f} {global_variables.velocity_component_y:.0f} {global_variables.velocity_component_z:.0f});\n"
 					"\t}\n")
 			elif self.file_type == "epsilon":
 				for i in range(len(input_bc)):
-					output_inlet.append(f"\t{input_bc[i]}\n"
+					output_bc.append(f"\t{input_bc[i]}\n"
 					"\t{\n"
 					"\t\ttype\t\t\tturbulentMixingLengthDissipationRateInlet;\n"
 					f"\t\tmixingLength\t{global_variables.turbulence_length_scale};\n"
@@ -77,14 +77,14 @@ class Incompressible:
 					"\t}\n")
 			elif self.file_type == "k":
 				for i in range(len(input_bc)):
-					output_inlet.append(f"\t{input_bc[i]}\n"
+					output_bc.append(f"\t{input_bc[i]}\n"
 					"\t{\n"
 					f"\t\ttype\t\t\t{self.inlet_type};\n"
 					f"\t\tvalue\t\t\t$internalField;\n"
 					"\t}\n")
 			elif self.file_type == "omega":
 				for i in range(len(input_bc)):
-					output_inlet.append(f"\t{input_bc[i]}\n"
+					output_bc.append(f"\t{input_bc[i]}\n"
 					"\t{\n"
 					f"\t\ttype\t\t\t{self.inlet_type};\n"
 					f"\t\tvalue\t\t\t$internalField;\n"

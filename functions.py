@@ -394,6 +394,11 @@ def openfoam_model():
     Menu for the openfoam initiliaser and selections
     '''
     clear()
+    # clearing the datas
+    global_variables.wall_output = list()
+    global_variables.inlet_output = list()
+    global_variables.outlet_output = list()
+    global_variables.symmetry_output = list()
     print("\t\tOpenfoam model initiliaser\n")
     # Selection between incompressible and compressible
     while True:
