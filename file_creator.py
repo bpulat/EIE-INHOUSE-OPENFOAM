@@ -82,7 +82,7 @@ class Incompressible:
 					f"\t\ttype\t\t\t{self.inlet_type};\n"
 					f"\t\tvalue\t\t\t$internalField;\n"
 					"\t}\n")
-			elif self.file_type == "omega":
+			elif self.file_type == "omega" or self.file_type == "nut":
 				for i in range(len(input_bc)):
 					output_bc.append(f"\t{input_bc[i]}\n"
 					"\t{\n"
@@ -221,6 +221,8 @@ class Incompressible:
 			a.write(f"internalField	  uniform {global_variables.turbulence_specific_dissipation_rate};\n")
 		elif self.file_type == "epsilon":
 			a.write(f"internalField	  uniform {global_variables.turbulence_dissipation_rate};\n")
+		elif self.file_type == "U":
+			a.write(f"internalField	  uniform (0 0 0);")
 		else:
 			a.write("internalField	  uniform 0;\n")
 		a.write("\n"
