@@ -465,8 +465,8 @@ def openfoam_model():
     if global_variables.time_dependency == 1 and global_variables.analysis_model == 1:
         global_variables.solution_algorithm == "SIMPLE"
 
-
-    mesh_export.select_mesh()
+    if mesh_export.select_mesh() == 0:
+        return 0
     print("Exporting boundary conditions...")
     mesh_export.bc_reader("wall",global_variables.wall_output) # export wall conditions
     mesh_export.bc_reader("velocity-inlet",global_variables.inlet_output) # export inlet conditions
@@ -475,10 +475,11 @@ def openfoam_model():
     file_creator.create_working_directory(R"\openfoam_inputs") # create the openfoam input directory
     file_creator.create_working_directory(R"\openfoam_inputs\0") # create the 0 directory
     file_creator.write_0_files() # create 0 files
-    file_creator.create_working_directory(R"\openfoam_inputs\system") #create the system directory
-    file_creator.write_system_files()
-    file_creator.create_working_directory(R"\openfoam_inputs\constant") #create the constant directory
-    file_creator.write_constant_files()
+    # file_creator.create_working_directory(R"\openfoam_inputs\system") #create the system directory
+    # file_creator.write_system_files()
+    # file_creator.create_working_directory(R"\openfoam_inputs\constant") #create the constant directory
+    # file_creator.write_constant_files()
+
 
 
 def main_menu():

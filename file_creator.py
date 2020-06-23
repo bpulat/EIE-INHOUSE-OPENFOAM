@@ -20,10 +20,10 @@ def create_working_directory(directory_name):
 	try:
 		os.mkdir(openfoam_inputs)
 	except OSError:
-		print("Creation of the directory %s failed" % openfoam_inputs)
+		print(f"Creation of the directory {openfoam_inputs} failed")
 		print("Check if the directory was already created !")
 	else:
-		print("Successfully created the directory %s " % openfoam_inputs)
+		print(f"Successfully created the directory {openfoam_inputs}")
 	# Create the working directory
 
 
@@ -39,18 +39,18 @@ class Incompressible:
 		self.inlet_type = inlet_type
 
 
-
 	def file_0_creator(self):
 		'''
 			Function of creating all 0 files
 			There are inner functions for creating different boundary conditions
 		'''
-	# R is used to assign escape character \
-	# f is used to assign file_type in the string
+		# R is used to assign escape character \
+		# f is used to assign file_type in the string
+		global openfoam_inputs
 		file_name = Rf"\{self.file_type}"
 		file_location = openfoam_inputs + file_name
 
-		def inlet_condition_creator(input_bc, output_inlet):
+		def inlet_condition_creator(input_bc, output_bc):
 			'''
 				To create inlet condition
 			'''
@@ -82,7 +82,7 @@ class Incompressible:
 					f"\t\ttype\t\t\t{self.inlet_type};\n"
 					f"\t\tvalue\t\t\t$internalField;\n"
 					"\t}\n")
-			else:
+			elif self.file_type == "omega":
 				for i in range(len(input_bc)):
 					output_inlet.append(f"\t{input_bc[i]}\n"
 					"\t{\n"
@@ -93,7 +93,7 @@ class Incompressible:
 			'''
 				To create outlet conditions
 			'''
-			if self.file_type == "epsilon" or self.file_type == "k":
+			if self.file_type == "epsilon" or self.file_type == "k" or self.file_type == "omega":
 				for i in range(len(input_bc)):
 					output_bc.append(f"\t{input_bc[i]}\n"
 					"\t{\n"

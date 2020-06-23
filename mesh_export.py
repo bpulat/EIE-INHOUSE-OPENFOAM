@@ -26,6 +26,7 @@ def select_mesh():
 		print("Mesh imported successfully")
 	except:
 		print("There was a problem while importing .msh file")
+		return 0
 
 
 def bc_reader(parser_name_bc, output_boundaries = list()):
