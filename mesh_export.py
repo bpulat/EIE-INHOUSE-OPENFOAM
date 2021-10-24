@@ -15,9 +15,8 @@ def select_mesh():
     root = Tk()
     root.update()
     root.withdraw()
-    root.filename =  filedialog.askopenfilename(initialdir = "/",title = \
-    "Select the mesh file",filetypes = (("msh files","*.msh"),\
-    ("all files","*.*")))
+    root.filename = filedialog.askopenfilename(initialdir="/", title="Select the mesh file", filetypes=(("msh files", "*.msh"),
+                                                                                                        ("all files", "*.*")))
     root.destroy()
     print("Importing Mesh variables...")
     try:
@@ -29,13 +28,12 @@ def select_mesh():
         return 0
 
 
-def bc_reader(parser_name_bc, output_boundaries = list()):
+def bc_reader(parser_name_bc, output_boundaries=list()):
 
     # Variables definition
     all_variables = list()
     parser_name = "(45"
     input_boundaries = list()
-
 
     for i in range(len(global_variables.contents)):
         cd = global_variables.contents[i].rfind(parser_name)
@@ -44,7 +42,7 @@ def bc_reader(parser_name_bc, output_boundaries = list()):
 
     for i in range(len(all_variables)):
         control1 = all_variables[i].rfind(parser_name_bc)
-        if control1 != -1 :
+        if control1 != -1:
             input_boundaries.append(all_variables[i])
 
     for i in range(len(input_boundaries)):
@@ -56,7 +54,6 @@ def bc_reader(parser_name_bc, output_boundaries = list()):
         arr_column = array_size[1]
     except:
         print("No boundary condition named", parser_name_bc)
-
 
     for i in range(arr_row):
         for j in range(arr_column):
