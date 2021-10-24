@@ -44,7 +44,7 @@ Thermal_conductivity_table = (0.782, 1.169, 1.62, 1.834, 2.041, 2.241, 2.32, 2.3
                               2.587, 2.624, 2.662, 2.735, 2.808, 2.88, 3.023, 3.162, 3.333, 3.5, 3.664, 3.825, 3.983,
                               4.441, 5.092, 5.579, 6.114, 6.632, 7.135, 7.626, 8.108, 8.583)
 # Total number of elements in the tuples
-array_length = len (Altitude)
+array_length = len(Altitude)
 
 # An empirical constant specified in the turbulence model (the value is approximation)
 Cmu = 0.09

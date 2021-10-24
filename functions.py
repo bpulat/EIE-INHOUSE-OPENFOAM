@@ -28,7 +28,7 @@ def user_input(input_variable, variable_string, variable_dimension):
     while not global_variables.error:
         try:
             # Assign the input as float to the variable and return to the variable
-            input_variable = float (input ("Enter your " + variable_string + " value" +
+            input_variable = float(input("Enter your " + variable_string + " value" +
                                            " [" + variable_dimension + "]" + ": "))
 
             # Exit the loop if conditions are met
@@ -70,11 +70,11 @@ def input_function():
 
     # GET THE USER INPUTS
     print("             ------------------                 -----------  \n"
-		  "            |                  |               |           | \n"
-		  "     Z      |       SIDE       |       Z       |   FRONT   | \n"
-		  "     ^      |       VIEW       |       ^       |   VIEW    | \n"
-		  "     |      |                  |       |       |           | \n"
-		  "     ---> X  ------------------   Y <---        -----------  \n\n"
+      "            |                  |               |           | \n"
+      "     Z      |       SIDE       |       Z       |   FRONT   | \n"
+      "     ^      |       VIEW       |       ^       |   VIEW    | \n"
+      "     |      |                  |       |       |           | \n"
+      "     ---> X  ------------------   Y <---        -----------  \n\n"
           " X is the flow direction\n"
           " Z is the domain height\n"
           " Y is the 3rd axis\n")
